@@ -20,6 +20,7 @@ class YoutubeSearcher(UrlFetcher):
             type="video",
             pageToken=token,
             order="relevance",
+            videoCaption='closedCaption',
             part="id,snippet",
             maxResults=max_results,
             location=None,

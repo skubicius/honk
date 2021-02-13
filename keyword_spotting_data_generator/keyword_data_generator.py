@@ -4,7 +4,7 @@ import os
 import re
 import subprocess
 import string
-import wordset
+# import wordset
 import youtube_processor as yp
 from argparse import ArgumentParser
 from extractor import SphinxSTTExtractor
@@ -154,7 +154,7 @@ def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_
     keyword = keyword.lower()
 
     # list of keywords to search youtube about
-    synonyms = wordset.get_relevant_words(keyword, words_api_key)
+    synonyms = [] # wordset.get_relevant_words(keyword, words_api_key)
     synonyms = [keyword] + synonyms
 
     search_terms = []

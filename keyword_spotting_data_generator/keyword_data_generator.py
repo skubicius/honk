@@ -36,6 +36,34 @@ def contain_keyword(keyword, caption):
 
 
 def process_cation(keyword, caption, punctutation_translator, srt_tag_re):
+    cc_text = caption['text']
+    cc_text = srt_tag_re.sub('', cc_text)
+    cc_text = cc_text.encode('ascii', errors='ignore').decode()
+
+    # clean up punctuation
+    cc_text = cc_text.translate(punctutation_translator)
+    cc_text = cc_text.lower().strip().replace(',', '')
+    words = cc_text.strip().split()
+
+    # check if the caption contain the keyword
+    keyword_exist = contain_keyword(keyword, words)
+
+    if not keyword_exist:
+        # cp.print_color(cp.ColorEnum.YELLOW, "srt format is not interpretable for the video")
+        return None, None, None
+
+    try:
+        start_time, end_time = caption['start'], caption['start'] + caption['duration']
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except Exception as exception:
+        # cp.print_color(cp.ColorEnum.YELLOW, exception)
+        return None, None, None
+
+    print(int(16000 * start_time), int(16000 * end_time), words)
+    return int(16000 * start_time), int(16000 * end_time), words
+
+def process_cation_old(keyword, caption, punctutation_translator, srt_tag_re):
     '''
     process caption to get caption time and text
     if the target keyword is missing or srt format is incorrect, return None
@@ -75,7 +103,17 @@ def process_cation(keyword, caption, punctutation_translator, srt_tag_re):
     return start_time, end_time, words
 
 
+from youtube_transcript_api import YouTubeTranscriptApi
+
 def retrieve_captions(url, keyword):
+  captions = None
+  try:
+    captions = YouTubeTranscriptApi.get_transcript(url, languages=['en'])
+  except Exception as e:
+    print(e)
+  return captions
+
+def retrieve_captions_old(url, keyword):
     '''
     return captions if the video is in right format and contains target keyword
     else, return None
@@ -197,6 +235,10 @@ def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_
             print(f"keyword: {keyword}")
             print(f"searched term: {search_term}")
             print(f"url: {url}")
+
+            import time
+            print("Sleeping...")
+            time.sleep(10)
 
             if url in urls:
                 cp.print_color(cp.ColorEnum.YELLOW, "the video is already added")

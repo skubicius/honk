@@ -13,3 +13,7 @@ SpeechRecognition==3.7.1
 git+https://github.com/daemon/pytorch-pcen
 youtube-transcript-api==0.3.1
 nemo_toolkit[all]==1.0.0b3
+numba==0.48
+pydub
+pytube
+pocketsphinx

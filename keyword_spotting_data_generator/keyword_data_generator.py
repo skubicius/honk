@@ -112,6 +112,9 @@ def retrieve_captions(url, keyword):
   except Exception as e:
     print(e)
 
+  if not captions:
+    return None
+  
   for c in captions:
     if keyword in c['text'].lower():
       return captions
@@ -187,7 +190,7 @@ def extract_keyword(url, extractor, audio_segmentor, audio_data, start_time, end
     return extracted_audio_count
 
 
-def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_dir):
+def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_dir, search_term='polka king'):
     '''
     search keyword on youtube and extract keyword audio
     '''
@@ -201,6 +204,9 @@ def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_
     synonyms = [keyword] + synonyms
 
     search_terms = []
+    if search_term:
+      search_terms.append(search_term)
+  
     for term in synonyms:
         if term not in search_terms:
             search_terms.append(term)

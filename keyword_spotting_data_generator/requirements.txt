@@ -5,3 +5,4 @@ inflect==2.1.0
 pocketsphinx==0.1.15
 google-api-python-client==1.7.11
 pydub==0.23.1
+nemo_toolkit[all]==1.0.0b3

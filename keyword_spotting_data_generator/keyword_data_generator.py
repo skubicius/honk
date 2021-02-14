@@ -111,7 +111,12 @@ def retrieve_captions(url, keyword):
     captions = YouTubeTranscriptApi.get_transcript(url, languages=['en'])
   except Exception as e:
     print(e)
-  return captions
+
+  for c in captions:
+    if keyword in c['text'].lower():
+      return captions
+
+  return None
 
 def retrieve_captions_old(url, keyword):
     '''
@@ -236,9 +241,9 @@ def generate_dataset(youtube_api_key, words_api_key, keyword, data_size, output_
             print(f"searched term: {search_term}")
             print(f"url: {url}")
 
-            import time
-            print("Sleeping...")
-            time.sleep(10)
+            # import time
+            # print("Sleeping...")
+            # time.sleep(10)
 
             if url in urls:
                 cp.print_color(cp.ColorEnum.YELLOW, "the video is already added")
